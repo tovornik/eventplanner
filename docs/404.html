@@ -99,16 +99,17 @@
             const eventId = path.includes('/event/') ? path.split('/event/')[1] : '';
             
             if (eventId) {
-                // Try to open the app with custom scheme
+                // Try to open the app with custom scheme for specific event
                 window.location.href = `eventplanner://event/${eventId}`;
-                
-                // Fallback: redirect to Play Store after a delay if app doesn't open
-                setTimeout(() => {
-                    window.location.href = 'https://play.google.com/store/apps/details?id=dev.jt.eventplanner';
-                }, 2000);
             } else {
-                alert('No event ID found in the URL');
+                // Just open the app without specific event
+                window.location.href = 'eventplanner://open';
             }
+            
+            // Fallback: redirect to Play Store after a delay if app doesn't open
+            setTimeout(() => {
+                window.location.href = 'https://play.google.com/store/apps/details?id=dev.jt.eventplanner';
+            }, 2000);
         }
         
         // Auto-try to open app on page load if event ID is present
