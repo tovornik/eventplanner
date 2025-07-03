@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventPlanner - Join the Event</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+        p {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        .note {
+            margin-top: 30px;
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📅</div>
+        <h1>EventPlanner</h1>
+        <p>You've been invited to join an event! Download the EventPlanner app to view event details and RSVP.</p>
+        
+        <div class="buttons">
+            <a href="https://play.google.com/store/apps/details?id=dev.jt.eventplanner" class="btn btn-primary">
+                📱 Download on Google Play
+            </a>
+            <a href="#" onclick="tryOpenApp()" class="btn btn-secondary">
+                🚀 Open in App (if installed)
+            </a>
+        </div>
+        
+        <div class="note">
+            <p>If you already have the app installed, the second button will open it directly.</p>
+        </div>
+    </div>
+
+    <script>
+        function tryOpenApp() {
+            // Get event ID from URL if available
+            const path = window.location.pathname;
+            const eventId = path.includes('/event/') ? path.split('/event/')[1] : '';
+            
+            if (eventId) {
+                // Try to open the app with custom scheme
+                window.location.href = `eventplanner://event/${eventId}`;
+                
+                // Fallback: redirect to Play Store after a delay if app doesn't open
+                setTimeout(() => {
+                    window.location.href = 'https://play.google.com/store/apps/details?id=dev.jt.eventplanner';
+                }, 2000);
+            } else {
+                alert('No event ID found in the URL');
+            }
+        }
+        
+        // Auto-try to open app on page load if event ID is present
+        window.onload = function() {
+            const path = window.location.pathname;
+            if (path.includes('/event/')) {
+                // Wait a bit for page to load, then try to open app
+                setTimeout(tryOpenApp, 1000);
+            }
+        };
+    </script>
+</body>
+</html>
