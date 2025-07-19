@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Deletion Request - EventPlanner</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        input[type="email"], input[type="text"], textarea {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1em;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            box-sizing: border-box;
+        }
+        input[type="email"]:focus, input[type="text"]:focus, textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .help-text {
+            font-size: 0.9em;
+            margin-top: 5px;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: bold;
+            background: #ff4757;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background: #ff3742;
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            background: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+            transform: none;
+        }
+        .warning {
+            background: rgba(255, 193, 7, 0.2);
+            border: 2px solid rgba(255, 193, 7, 0.6);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .warning-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .warning-content {
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        .icon {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .back-link a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: opacity 0.2s;
+        }
+        .back-link a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+        .success-message {
+            display: none;
+            text-align: center;
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid rgba(76, 175, 80, 0.6);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .success-message.show {
+            display: block;
+        }
+        .preferred-method {
+            background: rgba(76, 175, 80, 0.15);
+            border: 2px solid rgba(76, 175, 80, 0.4);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .preferred-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #e8f5e8;
+        }
+        .path-highlight {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 0.9em;
+        }
+        .path-step {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .path-arrow {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .btn-app {
+            background: #4CAF50;
+            margin-top: 15px;
+            width: auto;
+            padding: 15px 30px;
+            display: inline-block;
+        }
+        .btn-app:hover {
+            background: #45a049;
+        }
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .divider span {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        .alternative-method {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .method-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+        .method-subtitle {
+            font-size: 0.95em;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+        .email-instructions {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        .email-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .email-content {
+            text-align: left;
+        }
+        .email-address {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .email-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 8px;
+            padding: 12px 20px;
+            background: #4CAF50;
+            border-radius: 10px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+        .email-link:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+        }
+        .email-requirements {
+            margin-bottom: 20px;
+        }
+        .email-requirements ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .email-requirements li {
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .user-id-path {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+        .path-highlight-small {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin: 15px 0 10px 0;
+            font-size: 0.85em;
+        }
+        .path-step-small {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .path-arrow-small {
+            font-size: 1em;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        @media (max-width: 600px) {
+            .path-highlight {
+                flex-direction: column;
+            }
+            .path-arrow {
+                transform: rotate(90deg);
+            }
+            .path-highlight-small {
+                flex-direction: column;
+            }
+            .path-arrow-small {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🗑️</div>
+        <h1>Delete Your Account</h1>
+        <p class="subtitle">Permanently delete your EventPlanner account and all associated data</p>
+        
+        <div class="preferred-method">
+            <div class="preferred-title">🎯 Fastest Way: Delete in App</div>
+            <div class="path-highlight">
+                <div class="path-step">Open EventPlanner App</div>
+                <div class="path-arrow">→</div>
+                <div class="path-step">Settings</div>
+                <div class="path-arrow">→</div>
+                <div class="path-step">Manage Account</div>
+                <div class="path-arrow">→</div>
+                <div class="path-step">Delete My Account</div>
+                <div class="path-arrow">→</div>
+                <div class="path-step">Confirm</div>
+            </div>
+            <button onclick="openApp()" class="btn btn-app">
+                📱 Open EventPlanner App
+            </button>
+        </div>
+        
+        <div class="divider">
+            <span>OR</span>
+        </div>
+        
+        <div class="alternative-method">
+            <div class="method-title">📧 Alternative: Email Request</div>
+            <div class="method-subtitle">If you can't access the app, send an email to request account deletion</div>
+        </div>
+        
+        <div class="warning">
+            <div class="warning-title">⚠️ Important Warning</div>
+            <div class="warning-content">
+                Account deletion is permanent and cannot be undone. All your events, comments, friend connections, and personal data will be permanently deleted from our servers.
+            </div>
+        </div>
+
+        <div class="email-instructions">
+            <div class="email-title">📮 Email Instructions</div>
+            <div class="email-content">
+                <div class="email-address">
+                    <strong>Send your deletion request to:</strong><br>
+                    <a href="mailto:malikiveliki@gmail.com?subject=Account Deletion Request - EventPlanner" class="email-link">
+                        malikiveliki@gmail.com
+                    </a>
+                </div>
+                
+                <div class="email-requirements">
+                    <strong>Include in your email:</strong>
+                    <ul>
+                        <li><strong>Your User ID (find this by exporting your account data)</strong></li>
+                        <li>The email address associated with your account</li>
+                        <li>Confirmation that you want to permanently delete your account</li>
+                    </ul>
+                </div>
+                
+                <div class="user-id-path">
+                    <strong>To find your User ID:</strong>
+                    <div class="path-highlight-small">
+                        <div class="path-step-small">App</div>
+                        <div class="path-arrow-small">→</div>
+                        <div class="path-step-small">Settings</div>
+                        <div class="path-arrow-small">→</div>
+                        <div class="path-step-small">Manage Account</div>
+                        <div class="path-arrow-small">→</div>
+                        <div class="path-step-small">See My Info</div>
+                    </div>
+                    <div class="help-text">Export your account data to get your User ID</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to EventPlanner</a> |
+            <a href="privacy-policy.html">Privacy Policy</a>
+        </div>
+    </div>
+
+    <script>
+        function openApp() {
+            // Try to open the app directly to settings/account deletion
+            window.location.href = 'eventplanner://settings/account';
+            
+            // Fallback: redirect to Play Store after a delay if app doesn't open
+            setTimeout(() => {
+                window.location.href = 'https://play.google.com/store/apps/details?id=dev.jt.eventplanner';
+            }, 2000);
+        }
+
+    </script>
+</body>
+</html>
